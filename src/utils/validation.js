@@ -9,16 +9,21 @@ export function validateJobOffer(offer) {
   if (!offer.compensation) {
     errors.push("Compensation information is required.");
   } else {
+    const salary = Number(offer.compensation.salary);
+    const bonus = Number(offer.compensation.bonus);
+
     if (
-      typeof offer.compensation.salary !== "number" ||
-      offer.compensation.salary < 0
+      offer.compensation.salary === "" ||
+      !Number.isFinite(salary) ||
+      salary < 0
     ) {
       errors.push("Salary must be a valid non-negative number.");
     }
 
     if (
-      typeof offer.compensation.bonus !== "number" ||
-      offer.compensation.bonus < 0
+      offer.compensation.bonus === "" ||
+      !Number.isFinite(bonus) ||
+      bonus < 0
     ) {
       errors.push("Bonus must be a valid non-negative number.");
     }
@@ -31,13 +36,16 @@ export function validateJobOffer(offer) {
   if (!offer.workConditions) {
     errors.push("Work conditions information is required.");
   } else {
+    const hours = Number(offer.workConditions.hoursPerWeek);
+
     if (!offer.workConditions.workArrangement) {
       errors.push("Work arrangement is required.");
     }
 
     if (
-      typeof offer.workConditions.hoursPerWeek !== "number" ||
-      offer.workConditions.hoursPerWeek <= 0
+      offer.workConditions.hoursPerWeek === "" ||
+      !Number.isFinite(hours) ||
+      hours <= 0
     ) {
       errors.push("Hours per week must be greater than 0.");
     }
