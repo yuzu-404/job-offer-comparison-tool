@@ -1,6 +1,11 @@
 export function validateJobOffer(offer) {
   const errors = [];
 
+  const isBlank = (value) =>
+    value === null ||
+    value === undefined ||
+    (typeof value === "string" && value.trim() === "");
+
   if (!offer) {
     errors.push("Job offer is required.");
     return errors;
@@ -13,7 +18,7 @@ export function validateJobOffer(offer) {
     const bonus = Number(offer.compensation.bonus);
 
     if (
-      offer.compensation.salary === "" ||
+      isBlank(offer.compensation.salary) ||
       !Number.isFinite(salary) ||
       salary < 0
     ) {
@@ -21,7 +26,7 @@ export function validateJobOffer(offer) {
     }
 
     if (
-      offer.compensation.bonus === "" ||
+      isBlank(offer.compensation.bonus) ||
       !Number.isFinite(bonus) ||
       bonus < 0
     ) {
@@ -31,6 +36,16 @@ export function validateJobOffer(offer) {
 
   if (!offer.benefits) {
     errors.push("Benefits information is required.");
+  } else {
+    const paidTimeOff = Number(offer.benefits.paidTimeOff);
+
+    if (
+      isBlank(offer.benefits.paidTimeOff) ||
+      !Number.isFinite(paidTimeOff) ||
+      paidTimeOff < 0
+    ) {
+      errors.push("Paid time off must be a valid non-negative number.");
+    }
   }
 
   if (!offer.workConditions) {
@@ -38,12 +53,12 @@ export function validateJobOffer(offer) {
   } else {
     const hours = Number(offer.workConditions.hoursPerWeek);
 
-    if (!offer.workConditions.workArrangement) {
+    if (isBlank(offer.workConditions.workArrangement)) {
       errors.push("Work arrangement is required.");
     }
 
     if (
-      offer.workConditions.hoursPerWeek === "" ||
+      isBlank(offer.workConditions.hoursPerWeek) ||
       !Number.isFinite(hours) ||
       hours <= 0
     ) {
