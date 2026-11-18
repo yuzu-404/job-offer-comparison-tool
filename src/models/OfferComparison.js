@@ -24,7 +24,7 @@ export class OfferComparison {
         const value = offer.compensation[field];
 
         if (
-          value === "" ||
+          (typeof value === "string" && value.trim() === "") ||
           value === null ||
           value === undefined ||
           !Number.isFinite(Number(value)) ||

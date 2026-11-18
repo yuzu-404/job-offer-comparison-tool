@@ -64,7 +64,7 @@ export function getFormErrors(offer) {
       continue;
     }
 
-    errors.push(getErrorMessage(errorCode) || message);
+    errors.push(errorCode ? getErrorMessage(errorCode) : message);
   }
 
   return [...new Set(errors)];
